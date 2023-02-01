@@ -61,46 +61,23 @@ print('The unique ratings are', sorted(df_2['rating'].unique()))
 # Create user-item matrix
 matrix = df_2.pivot_table(index='namahotel', columns='userId', values='rating')
 
-matrix1=pd.DataFrame(['matrix'])
-
-file_name = 'matrix1.xlsx'
-  
-# saving the excel 
-matrix.to_excel(file_name) 
-print('DataFrame is written to Excel File successfully.')
-
 # Normalize user-item matrix
 matrix_norm = matrix.subtract(matrix.mean(axis=1), axis = 0)
 
 # Item similarity matrix using Pearson correlation
 item_similarity = matrix_norm.T.corr()
 
-pearson=pd.DataFrame(['item_similarity'])
-
-file_name = 'pearson.xlsx'
-  
-# saving the excel 
-item_similarity.to_excel(file_name) 
-print('DataFrame is written to Excel File successfully.')
-
 # Pick a user ID
 picked_userid = 1
 # Pick a hotels
 picked_hotel = 'ASTON Inn Mataram'
 # Hotels that the target user has rating
-picked_userid_rating = pd.DataFrame(matrix_norm[picked_userid].dropna(axis=0, how='all')                          .sort_values(ascending=False))                          .reset_index()                          .rename(columns={1:'rating1', 2: 'rating2', 3: 'rating3', 4: 'rating4'})
+picked_userid_rating = pd.DataFrame(matrix_norm[picked_userid].dropna(axis=0, how='all').sort_values(ascending=False)).reset_index().rename(columns={1:'rating1', 2: 'rating2', 3: 'rating3', 4: 'rating4'})
 picked_userid_rating
 
 # Similarity score of the movie American Pie with all the other movies
 picked_hotel_similarity_score = item_similarity[[picked_hotel]].reset_index().rename(columns={'ASTON Inn Mataram':'similarity_score'})
 
-similarity=pd.DataFrame(['picked_hotel_similarity_score'])
-
-file_name = 'similarity.xlsx'
-  
-# saving the excel 
-picked_hotel_similarity_score.to_excel(file_name) 
-print('DataFrame is written to Excel File successfully.')
 
 # Rank the similarities between the hotels user 1 rated and American Pie.
 n = 5
